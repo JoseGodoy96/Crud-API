@@ -35,7 +35,10 @@ public class TaskService {
                 .map(task -> {
                     task.setTitle(updatedTask.getTitle());
                     task.setDescription(updatedTask.getDescription());
-                    task.setStatus(updatedTask.getStatus());
+
+                    if (updatedTask.getStatus() != null) {
+                        task.setStatus(updatedTask.getStatus());
+                    }
 
                     return taskRepository.save(task);
                 })
