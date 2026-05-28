@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 @Table(name = "tasks")
 public class Task {
 
-    // Marca el atributo como clave primatia
+    // Marca el atributo como clave primaria
     @Id
     // Genera el id automaticamente
     @GeneratedValue(strategy = GenerationType.IDENTITY)
