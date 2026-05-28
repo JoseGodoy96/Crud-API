@@ -19,10 +19,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleTaskNotFound(TaskNotFoundException exception) {
         Map<String, Object> errorResponse = Map.of(
-                "timestamp", LocalDateTime.now(),
                 "status", HttpStatus.NOT_FOUND.value(),
+                "message", exception.getMessage(),
                 "error", "Not Found",
-                "message", exception.getMessage()
+                "timestamp", LocalDateTime.now()
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
