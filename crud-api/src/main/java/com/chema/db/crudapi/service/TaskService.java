@@ -2,10 +2,10 @@ package com.chema.db.crudapi.service;
 
 import com.chema.db.crudapi.model.Task;
 import com.chema.db.crudapi.repository.TaskRepository;
+import com.chema.db.crudapi.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 // Esta clase es un service Beam
 @Service
@@ -22,8 +22,9 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> getTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public Task createTask(Task task) {
@@ -42,7 +43,7 @@ public class TaskService {
 
                     return taskRepository.save(task);
                 })
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public void deleteTask(Long id) {

@@ -20,7 +20,6 @@ etc.
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 // Indica a Spring que esta clase maneja EndPoints combina @Controller y @ResponseBody
 @RestController
@@ -40,7 +39,7 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Task> getTaskById(@PathVariable Long id) {
+    public Task getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
 
