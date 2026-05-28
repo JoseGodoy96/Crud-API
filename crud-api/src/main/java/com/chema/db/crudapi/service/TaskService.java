@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// Esta clase es un Service Bean
+// Esta clase es un service Beam
 @Service
 
 public class TaskService {
@@ -47,6 +47,10 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
+        if (!taskRepository.existsById(id)) {
+            throw new TaskNotFoundException(id);
+        }
+
         taskRepository.deleteById(id);
     }
 }
