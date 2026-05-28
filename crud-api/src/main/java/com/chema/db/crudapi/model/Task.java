@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 // Importa una clase de java para manejar fechas y horas
 import java.time.LocalDateTime;
 
+// Import para validar que no esten campos en blanco y para que haya un limite en el tamaño del mensaje enviado
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 // Entity se usa para indicar que esto es una base de datos y Table para definir el nombre
 @Entity
 @Table(name = "tasks")
@@ -20,8 +24,11 @@ public class Task {
 
     // Obliga a que title sea obligatorio
     @Column(nullable = false)
+    @NotBlank(message = "Title is required")
+    @Size(max = 100, message = "Title cannot exceed 100 characters")
     private String title;
 
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
 
     // Aqui guardas un Enum
