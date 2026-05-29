@@ -1,8 +1,11 @@
 package com.chema.db.crudapi.service;
 
+
+import com.chema.db.crudapi.dto.TaskRequest;
+import com.chema.db.crudapi.dto.TaskResponse;
+import com.chema.db.crudapi.exception.TaskNotFoundException;
 import com.chema.db.crudapi.model.Task;
 import com.chema.db.crudapi.repository.TaskRepository;
-import com.chema.db.crudapi.exception.TaskNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,32 +21,38 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<TaskResponse> getAllTasks() {
+        return taskRepository.findAll()
+                .stream()
+                .map(TaskMapper::toResponse)
+                .toList();
     }
 
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id)
+    public TaskResponse getTaskById(Long id) {
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
+
+        return TaskMapper.toResponse(task);
     }
 
-    public Task createTask(Task task) {
-        return taskRepository.save(task);
+    public TaskResponse createTask(TaskRequest request) {
+        Task task = TaskMapper.toEntity(request);
+        Task savedTask = taskRepository.save(task);
+
+        return TaskMapper.toResponse(savedTask);
     }
 
-    public Task updateTask(Long id, Task updatedTask) {
-        return taskRepository.findById(id)
-                .map(task -> {
-                    task.setTitle(updatedTask.getTitle());
-                    task.setDescription(updatedTask.getDescription());
-
-                    if (updatedTask.getStatus() != null) {
-                        task.setStatus(updatedTask.getStatus());
-                    }
-
-                    return taskRepository.save(task);
-                })
+    public TaskResponse updateTask(Long id, TaskRequest request) {
+        Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(id));
+
+        task.setTitle(request.getTitle());
+        task.setDescription(request.getDescription());
+        task.setStatus(request.getStatus());
+
+        Task updatedTask = taskRepository.save(task);
+
+        return TaskMapper.toResponse(updatedTask);
     }
 
     public void deleteTask(Long id) {
