@@ -1,6 +1,7 @@
 package com.chema.db.crudapi.controller;
 
-import com.chema.db.crudapi.model.Task;
+import com.chema.db.crudapi.dto.TaskRequest;
+import com.chema.db.crudapi.dto.TaskResponse;
 import com.chema.db.crudapi.service.TaskService;
 
 /*
@@ -35,24 +36,24 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
+    public List<TaskResponse> getAllTasks() {
         return taskService.getAllTasks();
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
+    public TaskResponse getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
 
     @PostMapping
-    public Task createTask(@Valid @RequestBody Task task) {
-        return taskService.createTask(task);
+    public TaskResponse createTask(@Valid @RequestBody TaskRequest request) {
+        return taskService.createTask(request);
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @Valid @RequestBody Task task) {
+    public TaskResponse updateTask(@PathVariable Long id, @Valid @RequestBody TaskRequest request) {
 
-        return taskService.updateTask(id, task);
+        return taskService.updateTask(id, request);
     }
 
     @DeleteMapping("/{id}")
