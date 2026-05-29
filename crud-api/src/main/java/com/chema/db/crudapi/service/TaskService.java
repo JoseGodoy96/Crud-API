@@ -48,7 +48,9 @@ public class TaskService {
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
-        task.setStatus(request.getStatus());
+        if (request.getStatus() != null) {
+            task.setStatus(request.getStatus());
+        }
 
         Task updatedTask = taskRepository.save(task);
 
