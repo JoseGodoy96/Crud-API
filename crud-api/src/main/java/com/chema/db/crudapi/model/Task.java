@@ -10,9 +10,15 @@ import java.time.LocalDateTime;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+// Import para usar lombok
+import lombok.Getter;
+import lombok.Setter;
+
 // Entity se usa para indicar que esto es una base de datos y Table para definir el nombre
 @Entity
 @Table(name = "tasks")
+@Getter
+@Setter
 public class Task {
 
     // Marca el atributo como clave primaria
@@ -38,21 +44,6 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Obligatorio en hibernate tener un constructor vacio para crear objetos automaticamente
-    public Task() {
-    }
-
-    // Constructor para crear objetos completos
-    public Task(Long id, String title, String description, TaskStatus status,
-                LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     // Este metodo se ejecuta automaticamente asigna la fecha automaticamente y si no define estado se pone como pendiente por defecto
     @PrePersist
     public void onCreate() {
@@ -70,44 +61,4 @@ public class Task {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 }
