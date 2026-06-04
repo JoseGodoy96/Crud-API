@@ -1,6 +1,6 @@
 package com.chema.db.crudapi.repository;
 
-import com.chema.db.crudapi.user.User;
+import com.chema.db.crudapi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.chema.db.crudapi.user;
+package com.chema.db.crudapi.model;
 
 import jakarta.persistence.*;
 
