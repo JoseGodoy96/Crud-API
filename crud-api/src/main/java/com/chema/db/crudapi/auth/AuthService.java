@@ -34,4 +34,19 @@ public class AuthService {
 
         userRepository.save(user);
     }
+
+    public void login(AuthRequest request) {
+
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean passwordMatches = passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        );
+
+        if (!passwordMatches) {
+            throw new RuntimeException("Invalid password");
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.chema.db.crudapi.auth;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,8 +17,15 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public String AuthResponse(@Valid @RequestBody AuthRequest request) {
+    public Map<String, String> AuthResponse(@Valid @RequestBody AuthRequest request) {
         authService.register(request);
-        return "User registered successfully";
+        return Map.of("message", "User registered successfully");
+    }
+
+    @PostMapping("/login")
+    public Map<String, String> login(@Valid @RequestBody AuthRequest request) {
+        authService.login(request);
+
+        return Map.of("message", "Login successful");
     }
 }
