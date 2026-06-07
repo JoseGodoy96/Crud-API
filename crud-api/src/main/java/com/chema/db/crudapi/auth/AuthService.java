@@ -7,17 +7,22 @@ import com.chema.db.crudapi.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.chema.db.crudapi.security.JwtService;
+
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public void register(AuthRequest request) {
@@ -35,7 +40,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public void login(AuthRequest request) {
+    public AuthResponse login(AuthRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -48,5 +53,9 @@ public class AuthService {
         if (!passwordMatches) {
             throw new RuntimeException("Invalid password");
         }
+
+        String token = jwtService.generateToken(user.getUsername());
+
+        return new AuthResponse(token);
     }
 }

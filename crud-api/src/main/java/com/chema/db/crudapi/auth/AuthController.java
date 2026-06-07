@@ -23,9 +23,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@Valid @RequestBody AuthRequest request) {
+    public AuthResponse login(@Valid @RequestBody AuthRequest request) {
         authService.login(request);
 
-        return Map.of("message", "Login successful");
+        return authService.login(request);
     }
 }
