@@ -36,17 +36,28 @@ public class JwtService {
     // Genera un JWT para el usuario recibido como parámetro
     public String generateToken(String username) {
         return Jwts.builder()
-                // Identifica al propietario del token
-                // Normalmente username o userId
                 .subject(username)
-                // Fecha de creación del token
                 .issuedAt(new Date())
-                // Fecha de expiración del token
-                // Hora actual + tiempo configurado
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                // Firma digitalmente el token para evitar modificaciones
                 .signWith(getSigningKey())
-                // Construye el JWT y lo devuelve como String
                 .compact();
+    }
+
+    // Metodo para extraer el Token y poder leerlo
+    public String extractUsername(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    // Validador de que el token y el nombre son correctos
+    public boolean isTokenValid(String token, String username) {
+
+        String extractedUsername = extractUsername(token);
+
+        return extractedUsername.equals(username);
     }
 }
