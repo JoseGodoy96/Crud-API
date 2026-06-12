@@ -1,0 +1,78 @@
+# Versión de la especificación Docker Compose
+# En Docker moderno ya no suele ser necesaria
+version: "3.8"
+
+# Lista de contenedores que se levantarán
+services:
+
+  # Contenedor de PostgreSQL
+  postgres:
+
+    # Imagen oficial de PostgreSQL versión 16
+    image: postgres:16
+
+    # Nombre amigable del contenedor
+    container_name: crud-api-postgres
+
+    # Variables de entorno utilizadas por PostgreSQL
+    environment:
+
+      # Nombre de la base de datos que se creará automáticamente
+      POSTGRES_DB: crudapi
+
+      # Usuario administrador de PostgreSQL
+      POSTGRES_USER: postgres
+
+      # Contraseña del usuario
+      POSTGRES_PASSWORD: postgres
+
+    # Mapeo de puertos
+    # HOST:CONTENEDOR
+    ports:
+
+      # localhost:5434 → postgres:5432
+      - "5434:5432"
+
+    # Volumen persistente para no perder datos
+    volumes:
+
+      # Volumen Docker → carpeta interna PostgreSQL
+      - postgres_data:/var/lib/postgresql/data
+
+  # Contenedor de Spring Boot
+  app:
+
+    # Construye la imagen usando el Dockerfile de esta carpeta
+    build: .
+
+    # Nombre amigable del contenedor
+    container_name: crud-api-app
+
+    # Mapeo de puertos
+    ports:
+
+      # localhost:8080 → aplicación Spring Boot
+      - "8080:8080"
+
+    # Arranca PostgreSQL antes de arrancar la aplicación
+    depends_on:
+      - postgres
+
+    # Variables de entorno para Spring Boot
+    environment:
+
+      # URL de conexión a PostgreSQL
+      # OJO: se usa "postgres" porque es el nombre del servicio Docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/crudapi
+
+      # Usuario de PostgreSQL
+      SPRING_DATASOURCE_USERNAME: postgres
+
+      # Contraseña de PostgreSQL
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+# Declaración de volúmenes Docker
+volumes:
+
+  # Volumen persistente donde PostgreSQL almacena sus datos
+  postgres_data:
