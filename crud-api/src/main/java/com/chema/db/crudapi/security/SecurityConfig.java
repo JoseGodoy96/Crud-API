@@ -57,16 +57,21 @@ public class SecurityConfig {
                 // Configura qué endpoints son accesibles
                 .authorizeHttpRequests(auth -> auth
 
-                        // Endpoints públicos
+                        // Permite acceso público a todos los endpoints de autenticación
                         .requestMatchers("/auth/**").permitAll()
 
-                        // Swagger accesible sin login
+                        // Permite acceder a Swagger sin necesidad de autenticarse
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // Cualquier otro endpoint requiere autenticación
+                        // Solo usuarios con rol USER o ADMIN pueden acceder
+                        .requestMatchers("/api/tasks/**")
+                        .hasAnyRole("USER", "ADMIN")
+
+                        // Cualquier endpoint que no haya sido configurado anteriormente
+                        // requiere que el usuario esté autenticado
                         .anyRequest().authenticated()
                 )
 
