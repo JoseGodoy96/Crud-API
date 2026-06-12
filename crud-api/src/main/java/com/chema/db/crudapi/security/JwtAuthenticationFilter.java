@@ -22,7 +22,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.List;
 
 // Spring detecta automáticamente este filtro
 @Component
@@ -90,7 +92,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 null,
 
                                 // Lista de roles/permisos
-                                Collections.emptyList()
+                                // Sin permisos Collections.emptyList()
+                                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
                         );
 
                 // Añade detalles de la petición actual
