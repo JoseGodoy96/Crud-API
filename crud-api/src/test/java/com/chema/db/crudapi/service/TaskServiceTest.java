@@ -125,9 +125,8 @@ class TaskServiceTest {
                 .thenReturn(Optional.empty());
 
         // Espera que se lance TaskNotFoundException
-        assertThrows(TaskNotFoundException.class, () -> {
-            taskService.getTaskById(99L);
-        });
+        assertThrows(TaskNotFoundException.class,
+                () -> taskService.getTaskById(99L));
 
         // Verifica que se realizó la búsqueda
         verify(taskRepository, times(1))
