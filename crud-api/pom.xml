@@ -30,10 +30,17 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <!-- Para crear APIs REST: controllers, endpoints, JSON -->
+        <!-- Tests para Spring MVC: WebMvcTest, MockMvc, etc. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring MVC / REST Controllers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
         <!-- Para trabajar con JPA/Hibernate y base de datos -->
